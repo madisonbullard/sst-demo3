@@ -1,0 +1,23 @@
+{
+	"name": "sst-demo3",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"check": "pnpm biome check --write ./",
+		"dev": "AWS_PROFILE=sst-demo-dev sst dev",
+		"sso": "aws sso login --sso-session=sst-demo",
+		"deploy": "AWS_PROFILE=sst-demo-dev pnpm sst deploy"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"sst": "3.2.47"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@tsconfig/node20": "^20.1.4",
+		"@types/aws-lambda": "8.10.145"
+	}
+}
