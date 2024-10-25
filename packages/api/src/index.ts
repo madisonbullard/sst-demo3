@@ -3,6 +3,7 @@ import { handle, streamHandle } from "hono/aws-lambda";
 import { compress } from "hono/compress";
 import { logger } from "hono/logger";
 import { Result } from "./common";
+import { user } from "./users";
 
 const app = new OpenAPIHono();
 app.use("*", logger());
@@ -16,16 +17,19 @@ app.openAPIRegistry.registerComponent("securitySchemes", "Bearer", {
 	scheme: "bearer",
 });
 
-const routes = app.openapi(
+const routes = app.route("/user", user).openapi(
 	createRoute({
 		method: "get",
 		path: "/",
 		responses: {
-			200: Result(z.object({ message: z.string() }), "Returns 'Hello, world!'"),
+			200: Result(
+				z.object({ message: z.literal("Hello, world!") }),
+				"Returns 'Hello, world!'",
+			),
 		},
 	}),
 	async (c) => {
-		return c.json({ result: { message: "Hello, world!" } }, 200);
+		return c.json({ result: { message: "Hello, world!" as const } }, 200);
 	},
 );
 

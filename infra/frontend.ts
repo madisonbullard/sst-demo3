@@ -1,8 +1,9 @@
 import { apiRouter } from "./api";
+import { authRouter } from "./auth";
 
 export const site = new sst.aws.SvelteKit("Frontend", {
 	path: "packages/frontend",
-	link: [apiRouter],
+	link: [apiRouter, authRouter],
 });
 
 export const outputs = {

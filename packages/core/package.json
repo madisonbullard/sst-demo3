@@ -1,0 +1,32 @@
+{
+	"name": "core",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"type": "module",
+	"scripts": {
+		"db": "AWS_PROFILE=sst-demo-dev pnpm sst shell drizzle-kit",
+		"generate": "pnpm db generate",
+		"migrate": "pnpm db migrate",
+		"db:studio": "AWS_PROFILE=sst-demo-dev pnpm sst shell drizzle-kit studio"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@neondatabase/serverless": "0.10.1",
+		"bufferutil": "4.0.8",
+		"drizzle-orm": "0.35.3",
+		"ws": "8.18.0",
+		"zod": "3.23.8"
+	},
+	"devDependencies": {
+		"@types/ws": "8.5.12",
+		"drizzle-kit": "0.26.2"
+	},
+	"exports": {
+		"./*.sql": "./src/*.sql.ts",
+		"./*.ts": "./src/*.ts",
+		"./*": "./src/*.ts"
+	}
+}

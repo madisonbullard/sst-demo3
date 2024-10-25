@@ -1,7 +1,12 @@
 <script lang="ts">
-  import type { PageData } from "./$types";
+  import { enhance } from "$app/forms";
 
-  export let data: PageData;
+  export let data;
 </script>
 
-<h1>{data.message}</h1>
+{data.message}
+
+<form use:enhance method="post">
+  <input type="email" name="email" />
+  <button>Log in or create account</button>
+</form>

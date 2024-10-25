@@ -1,5 +1,4 @@
 /// <reference path="./.sst/platform/config.d.ts" />
-
 import { readdirSync } from "node:fs";
 
 export default $config({
@@ -8,6 +7,7 @@ export default $config({
 			name: "sst-demo3",
 			removal: input?.stage === "production" ? "retain" : "remove",
 			home: "aws",
+			providers: { neon: "0.6.3" },
 		};
 	},
 	async run() {
@@ -16,7 +16,6 @@ export default $config({
 			const result = await import(`./infra/${value}`);
 			if (result.outputs) Object.assign(outputs, result.outputs);
 		}
-
 		return outputs;
 	},
 });
