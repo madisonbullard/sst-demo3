@@ -19,6 +19,7 @@
 	"dependencies": {
 		"api": "workspace:*",
 		"hono": "4.6.6",
-		"svelte-kit-sst": "2.43.5"
+		"svelte-kit-sst": "2.43.5",
+		"zod": "3.23.8"
 	}
 }

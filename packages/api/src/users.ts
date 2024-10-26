@@ -1,6 +1,7 @@
 import { OpenAPIHono, createRoute } from "@hono/zod-openapi";
 import { User } from "core/user/index";
 import { ApiError, Result } from "./common";
+import { AuthMiddleware } from "./middleware/auth";
 
 export namespace UsersApi {
 	export const UserSchema = User.Info.openapi("User");
@@ -22,4 +23,6 @@ export namespace UsersApi {
 	);
 }
 
-export const user = new OpenAPIHono().route("/", UsersApi.route);
+export const user = new OpenAPIHono()
+	.use("*", AuthMiddleware)
+	.route("/", UsersApi.route);
