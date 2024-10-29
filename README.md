@@ -243,7 +243,15 @@
           },
         ```
     - add `link` in FE infra
-    - FE package.json dependency: `"api": "workspace:*",`
+      - ```ts
+        import { apiRouter } from "./api";
+
+        export const site = new sst.aws.SvelteKit("Frontend", {
+          path: "packages/frontend",
+          link: [apiRouter],
+        });
+        ```
+    - `p add --filter frontend api@workspace:^
     - `p add --filter frontend hono`
     - `lib/api/index.ts`
       - ```js
@@ -258,7 +266,25 @@
         }
         
         ```
-      - update svelte app tsconfig "includes"
+      - update `frontend/tsconfig.json` "include" statement to include `sst-env.d.ts`
+        - You need to heed the warning in the tsconfig comment about merging includes/excludes
+        - Resulting "include" should look like:
+          - ```json
+            	"include": [
+            		"./.svelte-kit/ambient.d.ts",
+            		"./.svelte-kit/non-ambient.d.ts",
+            		"./.svelte-kit/types/**/$types.d.ts",
+            		"./vite.config.js",
+            		"./vite.config.ts",
+            		"./src/**/*.js",
+            		"./src/**/*.ts",
+            		"./src/**/*.svelte",
+            		"./tests/**/*.js",
+            		"./tests/**/*.ts",
+            		"./tests/**/*.svelte",
+            		"sst-env.d.ts"
+            	]
+            ``` 
     - `page.server.ts`
       - ```ts
         import { client } from "$lib/api";
@@ -529,7 +555,7 @@
           }
         ```
 - Add `UsersApi`
-  - Add `"core": "workspace:*",` to `api/package.json`
+  - `p add --filter api core@workspace:^`
   - Add `api/src/users.ts`
     - ```ts
       import { OpenAPIHono, createRoute } from "@hono/zod-openapi";
