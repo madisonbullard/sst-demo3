@@ -13,6 +13,7 @@ To run this repo, you need to set up credentials for:
     - See `infra/secret.ts`
     - Populate after running `sst init` by running `AWS_PROFILE=sst-demo-dev pnpm sst secret set DevEmailAddress YOUR@EMAIL.COM`
 
+### Demo script
 - BEFORE DEMO
   - Alias `p` to `pnpm` (this was supposed to be a private demo script, and I use that alias. Don't wanna change it now.)
   - create empty [Neon](https://neon.tech/) account
