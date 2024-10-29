@@ -1,3 +1,17 @@
+This is the demo script I was going to do in realtime before realizing it would take like 1.5 hours to get through.
+To run this repo, you need to set up credentials for:
+- AWS (see guide [here](https://docs.sst.dev/setting-up-aws))
+  - This repo assumes you call the AWS profile `sst-demo-dev` and `sst-demo-prod`.
+  - You need to assume the role of these profiles to interface with any AWS resources by setting `AWS_PROFILE=sst-demo-dev` in your shell before executing commands.
+  - The guide below walks you through that part.
+- Neon
+  - Create an account [here](https://console.neon.tech/signup)
+  - Don't create a project, we'll do it programmatically
+  - Do create an API token to store in `.env` as `NEON_API_KEY`
+- Populate the SST Secrets needed to run `sst dev` successfully
+  - In this case, there is only one secret to populate: `DevEmailAddress`
+    - See `infra/secret.ts`
+    - Populate after running `sst init` by running `AWS_PROFILE=sst-demo-dev pnpm sst secret set DevEmailAddress YOUR@EMAIL.COM`
 
 - BEFORE DEMO
   - Alias `p` to `pnpm` (this was supposed to be a private demo script, and I use that alias. Don't wanna change it now.)
