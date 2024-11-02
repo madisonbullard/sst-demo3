@@ -115,7 +115,6 @@ To run this repo, you need to set up credentials for:
     ```
 - sveltekit
   - `mkdir packages && cd packages && npx sv create frontend`
-  - install deps
   - replace adapter in `svelte.config.ts` with `import adapter from "svelte-kit-sst";`
     - `p add --filter frontend -D svelte-kit-sst`
     - `p remove --filter frontend @svelte/adapter-auto`
@@ -137,10 +136,9 @@ To run this repo, you need to set up credentials for:
 - API
   - We're gonna build an API deployed to a lambda. It's going to be type safe and conform to openapi spec.
   - `pnpm init` packages/api
-    - add `"type": "module"`
     - `p add @hono/zod-openapi hono`
     - `p add @types/node -D`
-  - copy over tsconfig from root
+  - copy over tsconfig from root: `cp tsconfig.json packages/api`
   - `src/index.ts`
     - ```ts
       import { OpenAPIHono } from "@hono/zod-openapi";
@@ -168,7 +166,7 @@ To run this repo, you need to set up credentials for:
       
       export const handler = process.env.SST_LIVE ? handle(app) : streamHandle(app);
       ```
-  - Add `api/src/common.ts`
+  - Add `api/src/common.ts` to define some common openapi response schemas
     - ```ts
       import { z } from "zod";
       
@@ -195,7 +193,7 @@ To run this repo, you need to set up credentials for:
       }
       
       ```
-  - update hello world to openapi
+  - update hello world route to use openapi spec
     - ```ts
       const routes = app.openapi(
         createRoute({
@@ -209,6 +207,7 @@ To run this repo, you need to set up credentials for:
           },
         }),
         async (c) => {
+          // You'll see a type error if you declare any string other than `"Hello, world!" as const`
           return c.json({ result: { message: "Hello, world!" as const } }, 200);
         },
       );
@@ -218,11 +217,11 @@ To run this repo, you need to set up credentials for:
       export type AppType = typeof routes;
       ```
   - add `infra/api.ts`
-    - Add a Cloudfront Function to host router, and a Cloudfront CDN distribution
+    - Add a Cloudfront Function to host router, and a corresponding Cloudfront distribution
     - ```js
       const api = new sst.aws.Function("Api", {
         url: true,
-        streaming: !$dev,
+        streaming: !$dev, // SST doesn't support streaming responses when running in Live mode (i.e. during local dev)
         handler: "./packages/api/src/index.handler",
       });
       
@@ -235,7 +234,7 @@ To run this repo, you need to set up credentials for:
       };
       
       ```
-  - update `sst.config.ts`
+  - update `sst.config.ts` to recurse over infra files and import them
     - ```ts
       async run() {
           const outputs = {};
